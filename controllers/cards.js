@@ -27,13 +27,11 @@ const createCard = (req, res) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        res.status(ERROR_CODE.BAD_REQUEST).send({
-          message: 'Переданы некорректные данные при создании карточки.',
-        });
+        console.log(ERROR_CODE.BAD_REQUEST);
+        console.log('Переданы некорректные данные при создании карточки.');
       } else {
-        res.status(ERROR_CODE.SERVER_ERROR).send({
-          message: 'На сервере произошла ошибка',
-        });
+        console.log(ERROR_CODE.SERVER_ERROR);
+        console.log('На сервере произошла ошибка');
       }
     });
 };
@@ -51,13 +49,11 @@ const deleteCard = (req, res) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        res.status(ERROR_CODE.BAD_REQUEST).send({
-          message: 'Переданы некорректные данные при удалении карточки.',
-        });
+        console.log(ERROR_CODE.BAD_REQUEST);
+        console.log('Переданы некорректные данные при удалении карточки.');
       } else {
-        res.status(ERROR_CODE.SERVER_ERROR).send({
-          message: 'На сервере произошла ошибка',
-        });
+        console.log(ERROR_CODE.SERVER_ERROR);
+        console.log('На сервере произошла ошибка');
       }
     });
 };
@@ -80,13 +76,11 @@ const likeCard = (req, res) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        res.status(ERROR_CODE.BAD_REQUEST).send({
-          message: 'Переданы некорректные данные для постановки лайка.',
-        });
+        console.log(ERROR_CODE.BAD_REQUEST);
+        console.log('Переданы некорректные данные для постановки лайка.');
       } else {
-        res.status(ERROR_CODE.SERVER_ERROR).send({
-          message: 'На сервере произошла ошибка',
-        });
+        console.log(ERROR_CODE.SERVER_ERROR);
+        console.log('На сервере произошла ошибка');
       }
     });
 };
@@ -109,13 +103,11 @@ const dislikeCard = (req, res) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        res
-          .status(ERROR_CODE.BAD_REQUEST)
-          .send({ message: 'Переданы некорректные данные для снятии лайка.' });
+        console.log(ERROR_CODE.BAD_REQUEST);
+        console.log('Переданы некорректные данные для снятии лайка.');
       } else {
-        res.status(ERROR_CODE.SERVER_ERROR).send({
-          message: 'На сервере произошла ошибка',
-        });
+        console.log(ERROR_CODE.SERVER_ERROR);
+        console.log('На сервере произошла ошибка');
       }
     });
 };
