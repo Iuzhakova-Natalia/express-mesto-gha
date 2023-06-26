@@ -1,23 +1,10 @@
 const User = require('../models/user');
 const { ERROR_CODE } = require('../utils/constsnts');
 
-const createUser = (req, res) => {
-  const { name, about, avatar } = req.body;
-  User.create({ name, about, avatar })
-    .then((user) => {
-      res.status(ERROR_CODE.CREATED).send(user);
-    })
-    .catch((err) => {
-      if (err.name === 'ValidationError') {
-        res.status(ERROR_CODE.BAD_REQUEST).send({
-          message: 'Переданы некорректные данные при создании пользователя.',
-        });
-      } else {
-        res.status(ERROR_CODE.SERVER_ERROR).send({
-          message: 'На сервере произошла ошибка',
-        });
-      }
-    });
+const getUsers = (req, res) => {
+  User.find({})
+    .then((users) => res.send({ data: users }))
+    .catch(() => res.status(ERROR_CODE.SERVER_ERROR).send({ message: 'На сервере произошла ошибка' }));
 };
 
 const getUserById = (req, res) => {
@@ -42,21 +29,84 @@ const getUserById = (req, res) => {
     });
 };
 
-const getUsers = (req, res) => {
+const createUser = (req, res) => {
+  const { name, about, avatar } = req.body;
   User
-    .find({})
-    .then((users) => {
-      res.status(ERROR_CODE.OK).send(users);
+    .create({ name, about, avatar })
+    .then((user) => res.status(201).send(user))
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        res.status(ERROR_CODE.BAD_REQUEST).send({ message: 'Переданы некорректные данные' });
+      } else {
+        res.status(ERROR_CODE.SERVER_ERROR).send({ message: 'На сервере произошла ошибка' });
+      }
+    });
+};
+
+const updateUser = (req, res) => {
+  const userId = req.user._id;
+  const { name, about } = req.body;
+  User
+    .findByIdAndUpdate(
+      userId,
+      { name, about },
+      { new: true, runValidators: true },
+    )
+    .then((user) => {
+      if (!user) {
+        res
+          .status(ERROR_CODE.NOT_FOUND)
+          .send({ message: 'Пользователь по указанному id не найден.' });
+      } else {
+        res.send({ user });
+      }
     })
-    .catch(() => {
-      res.status(ERROR_CODE.SERVER_ERROR).send({
-        message: 'На сервере произошла ошибка',
-      });
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        res.status(ERROR_CODE.BAD_REQUEST).send({
+          message: 'Переданы некорректные данные при обновлении профиля.',
+        });
+      } else {
+        res.status(ERROR_CODE.SERVER_ERROR).send({
+          message: 'На сервере произошла ошибка',
+        });
+      }
+    });
+};
+
+const updateUserAvatar = (req, res) => {
+  const userId = req.user._id;
+  const { avatar } = req.body;
+  User
+    .findByIdAndUpdate(userId, { avatar }, { new: true, runValidators: true })
+    .then((user) => {
+      if (!user) {
+        res
+          .status(ERROR_CODE.NOT_FOUND)
+          .send({ message: 'Пользователь по указанному id не найден.' });
+      } else {
+        res.send({ user });
+      }
+    })
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        res.status(ERROR_CODE.BAD_REQUEST).send({
+          message: 'Переданы некорректные данные при обновлении аватара.',
+        });
+      } else {
+        res.status(ERROR_CODE.SERVER_ERROR).send({
+          message: 'На сервере произошла ошибка',
+          err: err.message,
+          stack: err.stack,
+        });
+      }
     });
 };
 
 module.exports = {
-  createUser,
   getUsers,
   getUserById,
+  createUser,
+  updateUser,
+  updateUserAvatar,
 };
