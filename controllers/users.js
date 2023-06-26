@@ -8,23 +8,21 @@ const getUsers = (req, res) => {
 };
 
 const getUserById = (req, res) => {
+  const { id } = req.params;
   User
-    .findById(req.params.userId)
-    .orFail(new Error('NotFound'))
-    .then((user) => res.send(user))
+    .findById(id)
+    .then((user) => {
+      if (!user) {
+        res.status(ERROR_CODE.NOT_FOUND).send({ message: 'Пользователь не найден' });
+      } else {
+        res.send(user);
+      }
+    })
     .catch((err) => {
       if (err.name === 'CastError') {
-        res
-          .status(ERROR_CODE.BAD_REQUEST)
-          .send({ message: 'Переданы некорректные данные.' });
-      } else if (err.message === 'NotFound') {
-        res
-          .status(ERROR_CODE.NOT_FOUND)
-          .send({ message: 'Пользователь по указанному id не найден' });
+        res.status(ERROR_CODE.BAD_REQUEST).send({ message: 'Переданы некорректные данные' });
       } else {
-        res.status(ERROR_CODE.SERVER_ERROR).send({
-          message: 'На сервере произошла ошибка',
-        });
+        res.status(ERROR_CODE.SERVER_ERROR).send({ message: 'На сервере произошла ошибка' });
       }
     });
 };
