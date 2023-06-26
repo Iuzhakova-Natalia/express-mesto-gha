@@ -22,3 +22,6 @@ app.use((req, res, next) => {
 
 app.use(bodyParser.json());
 app.use('/', router);
+app.use('/', (req, res) => { //* * Обработчик несуществующих маршрутов */
+  res.status(404).send({ message: 'Страница не найдена' });
+});
