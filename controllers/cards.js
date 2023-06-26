@@ -8,7 +8,7 @@ const getCards = (req, res) => {
       res.send(cards);
     })
     .catch(() => {
-      console.log(ERROR_CODE.SERVER_ERROR);
+      res.status(ERROR_CODE.SERVER_ERROR);
       console.log('На сервере произошла ошибка');
     });
 };
@@ -27,10 +27,10 @@ const createCard = (req, res) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        console.log(ERROR_CODE.BAD_REQUEST);
+        res.status(ERROR_CODE.BAD_REQUEST);
         console.log('Переданы некорректные данные при создании карточки.');
       } else {
-        console.log(ERROR_CODE.SERVER_ERROR);
+        res.status(ERROR_CODE.SERVER_ERROR);
         console.log('На сервере произошла ошибка');
       }
     });
@@ -49,10 +49,10 @@ const deleteCard = (req, res) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        console.log(ERROR_CODE.BAD_REQUEST);
+        res.status(ERROR_CODE.BAD_REQUEST);
         console.log('Переданы некорректные данные при удалении карточки.');
       } else {
-        console.log(ERROR_CODE.SERVER_ERROR);
+        res.status(ERROR_CODE.SERVER_ERROR);
         console.log('На сервере произошла ошибка');
       }
     });
@@ -76,10 +76,10 @@ const likeCard = (req, res) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        console.log(ERROR_CODE.BAD_REQUEST);
+        res.status(ERROR_CODE.BAD_REQUEST);
         console.log('Переданы некорректные данные для постановки лайка.');
       } else {
-        console.log(ERROR_CODE.SERVER_ERROR);
+        res.status(ERROR_CODE.SERVER_ERROR);
         console.log('На сервере произошла ошибка');
       }
     });
@@ -103,10 +103,10 @@ const dislikeCard = (req, res) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        console.log(ERROR_CODE.BAD_REQUEST);
+        res.status(ERROR_CODE.BAD_REQUEST);
         console.log('Переданы некорректные данные для снятии лайка.');
       } else {
-        console.log(ERROR_CODE.SERVER_ERROR);
+        res.status(ERROR_CODE.SERVER_ERROR);
         console.log('На сервере произошла ошибка');
       }
     });
