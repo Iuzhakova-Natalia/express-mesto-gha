@@ -7,8 +7,9 @@ const getCards = (req, res) => {
     .then((cards) => {
       res.send(cards);
     })
-    .catch((err) => {
-      res.status(ERROR_CODE.SERVER_ERROR).send({ message: err.message });
+    .catch(() => {
+      console.log(ERROR_CODE.SERVER_ERROR);
+      console.log('На сервере произошла ошибка');
     });
 };
 
@@ -31,7 +32,7 @@ const createCard = (req, res) => {
         });
       } else {
         res.status(ERROR_CODE.SERVER_ERROR).send({
-          message: 'Internal Server Error',
+          message: 'На сервере произошла ошибка',
         });
       }
     });
@@ -55,7 +56,7 @@ const deleteCard = (req, res) => {
         });
       } else {
         res.status(ERROR_CODE.SERVER_ERROR).send({
-          message: 'Internal Server Error',
+          message: 'На сервере произошла ошибка',
         });
       }
     });
@@ -84,7 +85,7 @@ const likeCard = (req, res) => {
         });
       } else {
         res.status(ERROR_CODE.SERVER_ERROR).send({
-          message: err.message,
+          message: 'На сервере произошла ошибка',
         });
       }
     });
@@ -113,7 +114,7 @@ const dislikeCard = (req, res) => {
           .send({ message: 'Переданы некорректные данные для снятии лайка.' });
       } else {
         res.status(ERROR_CODE.SERVER_ERROR).send({
-          message: err.message,
+          message: 'На сервере произошла ошибка',
         });
       }
     });

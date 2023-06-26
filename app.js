@@ -1,6 +1,6 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const { ERROR_CODE } = require('./utils/constsnts');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -20,8 +20,8 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(bodyParser.json());
+app.use(express.json());
 app.use('/', router);
-app.use('/', (req, res) => { //* * Обработчик несуществующих маршрутов */
-  res.status(404).send({ message: 'Страница не найдена' });
+app.use('/', (req, res) => {
+  res.status(ERROR_CODE.NOT_FOUND).send({ message: 'Страница не найдена' });
 });
