@@ -46,7 +46,7 @@ const deleteCard = (req, res) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        res.status(ERROR_CODE.BAD_REQUEST).console.log('Переданы некорректные данные при удалении карточки.');
+        res.status(ERROR_CODE.BAD_REQUEST).send({ message: 'Переданы некорректные данные при удалении карточки.' });
       } else {
         res.status(ERROR_CODE.SERVER_ERROR).send({ message: 'На сервере произошла ошибка' });
       }
